@@ -12,6 +12,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Base implements ServiceLocatorAwareInterface
 {
+	const MODULE_CONFIG_KEY = 'fzycommon';
+
     /**
      * @var ServiceLocatorInterface
      */
@@ -28,7 +30,8 @@ class Base implements ServiceLocatorAwareInterface
 	protected $em;
 
     /**
-     * @return array
+     * Get the application config as a Params object
+     * @return Params
      */
     public function getConfig()
     {
@@ -37,6 +40,15 @@ class Base implements ServiceLocatorAwareInterface
         }
 	    return $this->config;
     }
+
+	/**
+	 * Get the module config (application config section in the module key namespace specified by static::MODULE_CONFIG_KEY)
+	 * @return Params
+	 */
+	public function getModuleConfig()
+	{
+		return $this->getConfig()->getWrapped(static::MODULE_CONFIG_KEY);
+	}
 
     /**
      * Set service locator
