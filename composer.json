@@ -20,7 +20,7 @@
     	},
 	"autoload": {
         	"psr-0": {
-            		"FzyZF2Common\\": "src/"
+            		"FzyCommon\\": "src/"
         	}
     	}
 }
