@@ -41,7 +41,7 @@ abstract class BaseNull implements BaseInterface
     /**
      * Helper method to allow entities to set $this->property = $entity->asDoctrineProperty()
      * which will translate setting a null entity to setting a null value
-     * @return \App\Entity\Base|null
+     * @return \FzyCommon\Entity\Base|null
      */
     public function asDoctrineProperty()
     {
@@ -95,7 +95,7 @@ abstract class BaseNull implements BaseInterface
         return new \DateTime();
     }
 
-    public function tsGetFormatted(\DateTime $tsProperty = null, $format)
+    public function tsGetFormatted(\DateTime $tsProperty = null, $format = self::DEFAULT_DATE_FORMAT, $timezone = null)
     {
         return null;
     }
