@@ -2,6 +2,7 @@
 namespace FzyCommon\Service;
 
 use FzyCommon\Entity\Base\UserNull;
+use FzyCommon\Util\Params;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -11,17 +12,20 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Base implements ServiceLocatorAwareInterface
 {
-    const CONFIG_KEY = 'application';
-
     /**
      * @var ServiceLocatorInterface
      */
     protected $locator;
 
     /**
-     * @var
+     * @var Params
      */
     protected $config;
+
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	protected $em;
 
     /**
      * @return array
@@ -29,44 +33,9 @@ class Base implements ServiceLocatorAwareInterface
     public function getConfig()
     {
         if (!isset($config)) {
-            $this->config = $this->getServiceLocator()->get('config');
+            $this->config = Params::create($this->getServiceLocator()->get('config'));
         }
-
-        return
-            isset($this->config) &&
-            isset($this->config[static::CONFIG_KEY]) ?
-                $this->config[static::CONFIG_KEY]:
-                null;
-    }
-
-    /**
-     * Get a particular config value.
-     *
-     * @param  string $key
-     * @param  mixed  $default
-     * @return mixed
-     */
-    public function getOption($key, $default = null)
-    {
-        $config = $this->getConfig();
-
-        return
-            isset($config[$key]) ?
-                $config[$key] :
-                $default;
-    }
-
-    /**
-     * @param  array  $options
-     * @param  string $key
-     * @return null
-     */
-    protected function extractOption($options = array(), $key = '')
-    {
-        return
-            isset($options[$key]) ?
-                $options[$key] :
-                null;
+	    return $this->config;
     }
 
     /**
@@ -94,18 +63,10 @@ class Base implements ServiceLocatorAwareInterface
      */
     public function em()
     {
-        if (isset($this->em))
-            return $this->em;
-
-        return $this->getServiceLocator()->get('em');
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManager$em
-     */
-    public function setEntityManager($em)
-    {
-        $this->em = $em;
+	    if (!isset($this->em)) {
+		    $this->em = $this->getServiceLocator()->get('em');
+	    }
+	    return $this->em;
     }
 
     /**
@@ -149,9 +110,7 @@ class Base implements ServiceLocatorAwareInterface
      */
     public function allowed($resource, $privilege = null)
     {
-        /* @var $service \BjyAuthorize\Service\Authorize */
-
-        return $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize')->isAllowed($resource, $privilege);
+        throw new \Exception('No ACL at this time');
     }
 
 }
