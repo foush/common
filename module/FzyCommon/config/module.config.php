@@ -8,7 +8,7 @@ return array(
 		),
 		'factories' => array(
 			'FzyCommon\Config' => function($sm) {
-				return Params::create($sm->get('config'));
+				return \FzyCommon\Util\Params::create($sm->get('config'));
 			}
 		),
 	),
