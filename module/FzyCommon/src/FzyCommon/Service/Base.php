@@ -10,7 +10,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Class Base
  * @package FzyCommon\Service
  */
-class Base implements ServiceLocatorAwareInterface
+abstract class Base implements ServiceLocatorAwareInterface
 {
 	const MODULE_CONFIG_KEY = 'fzycommon';
 
@@ -36,7 +36,7 @@ class Base implements ServiceLocatorAwareInterface
     public function getConfig()
     {
         if (!isset($config)) {
-            $this->config = Params::create($this->getServiceLocator()->get('config'));
+            $this->config = $this->getServiceLocator()->get('FzyCommon\Config');
         }
 	    return $this->config;
     }
@@ -103,26 +103,6 @@ class Base implements ServiceLocatorAwareInterface
         }
 
         return $entity;
-    }
-
-    /**
-     * @return \FzyCommon\Entity\Base\UserInterface
-     */
-    public function currentUser()
-    {
-        $auth = $this->getServiceLocator()->get('zfcuser_auth_service');
-
-        return $auth->hasIdentity() ? $auth->getIdentity() : new UserNull();
-    }
-
-    /**
-     * @param $resource
-     * @param  null $privilege
-     * @return bool
-     */
-    public function allowed($resource, $privilege = null)
-    {
-        throw new \Exception('No ACL at this time');
     }
 
 }

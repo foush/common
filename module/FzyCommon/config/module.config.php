@@ -1,4 +1,5 @@
 <?php
+namespace FzyCommon;
 return array(
 	'service_manager' => array(
 		'invokables' => array(
@@ -6,26 +7,26 @@ return array(
 			'FzyCommon\Service\Flattener' => 'FzyCommon\Service\Flattener',
 		),
 		'factories' => array(
-
-		),
-		'abstract_factories' => array(
-
+			'FzyCommon\Config' => function($sm) {
+				return Params::create($sm->get('config'));
+			}
 		),
 	),
 	'controller_plugins' => array(
 		'invokables' => array(
-			'searchResult' => 'FzyCommon\Controller\Plugin\SearchResult',
-			'updateResult' => 'FzyCommon\Controller\Plugin\UpdateResult',
-			'e2f'          => 'FzyCommon\Controller\Plugin\EntityToForm',
+			'fzySearchResult' => 'FzyCommon\Controller\Plugin\SearchResult',
+			'fzyUpdateResult' => 'FzyCommon\Controller\Plugin\UpdateResult',
+			'fzyEntityToForm'          => 'FzyCommon\Controller\Plugin\EntityToForm',
 		)
 	),
 	'view_helpers' => array(
 		'invokables' => array(
-			'e2f'            => 'FzyCommon\View\Helper\EntityToForm',
-			'ngInit'         => 'FzyCommon\View\Helper\NgInit',
+			'fzyEntityToForm'            => 'FzyCommon\View\Helper\EntityToForm',
+			'fzyNgInit'         => 'FzyCommon\View\Helper\NgInit',
+			'fzyRequest' => 'FzyCommon\View\Helper\Request',
 		),
 		'factories' => array(
-			'flashMessages' => function($sm) {
+			'fzyFlashMessages' => function($sm) {
 				$flashmessenger = $sm->getServiceLocator()
 				                     ->get('ControllerPluginManager')
 				                     ->get('flashmessenger');
@@ -37,4 +38,18 @@ return array(
 			},
 		),
 	),
+	'doctrine' => array(
+		'driver' => array(
+			__NAMESPACE__ . '_driver' => array(
+				'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+				'cache' => 'array',
+				'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+			),
+			'orm_default' => array(
+				'drivers' => array(
+					__NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+				)
+			)
+		)
+	)
 );
