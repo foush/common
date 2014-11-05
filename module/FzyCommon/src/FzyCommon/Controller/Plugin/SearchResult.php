@@ -10,7 +10,7 @@ class SearchResult extends Base
     {
 
         /* @var $resultService \FzyCommon\Service\Search\Result */
-        $resultService = $this->getService('result');
+        $resultService = $this->getService('FzyCommon\Service\Search\Result');
 
         return $resultService->generatePageResult($result);
     }

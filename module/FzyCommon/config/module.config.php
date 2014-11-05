@@ -8,6 +8,7 @@ return array(
 		'invokables' => array(
 			'FzyCommon\Service\EntityToForm' => 'FzyCommon\Service\EntityToForm',
 			'FzyCommon\Service\Flattener' => 'FzyCommon\Service\Flattener',
+			'FzyCommon\Service\Search\Result' => 'FzyCommon\Service\Search\Result',
 		),
 		'factories' => array(
 			'FzyCommon\Config' => function($sm) {
