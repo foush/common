@@ -76,7 +76,7 @@ abstract class Base implements ServiceLocatorAwareInterface
     public function em()
     {
 	    if (!isset($this->em)) {
-		    $this->em = $this->getServiceLocator()->get('em');
+		    $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
 	    }
 	    return $this->em;
     }

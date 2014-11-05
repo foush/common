@@ -1,5 +1,8 @@
 <?php
 namespace FzyCommon;
+use Aws\S3\S3Client;
+use FzyCommon\Service\Base;
+
 return array(
 	'service_manager' => array(
 		'invokables' => array(
@@ -9,7 +12,25 @@ return array(
 		'factories' => array(
 			'FzyCommon\Config' => function($sm) {
 				return \FzyCommon\Util\Params::create($sm->get('config'));
-			}
+			},
+			'FzyCommon\ModuleConfig' => function($sm) {
+				return $sm->get('FzyCommon\Config')->getWrapped(Base::MODULE_CONFIG_KEY);
+			},
+			'FzyCommon\Service\Aws\Config' => function($sm) {
+				return $sm->get('FzyCommon\ModuleConfig')->getWrapped('aws');
+			},
+			/**
+			 * @return \FzyCommon\Util\Params
+			 */
+			'FzyCommon\Service\Aws\S3\Config' => function($sm) {
+				return $sm->get('FzyCommon\Service\Aws\Config')->getWrapped('s3');
+			},
+			/**
+			 * @return \Aws\S3\S3Client
+			 */
+			'FzyCommon\Service\Aws\S3' => function($sm) {
+				return S3Client::factory($sm->get('FzyCommon\Service\Aws\S3\Config')->get());
+			},
 		),
 	),
 	'controller_plugins' => array(

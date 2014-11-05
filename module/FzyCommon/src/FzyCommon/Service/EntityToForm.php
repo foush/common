@@ -36,8 +36,7 @@ class EntityToForm extends Base
         // use the entity annotations and create a zend form object
         $form = $builder->createForm($className);
         // set strategy for how to transfer data between form elements and
-        $form->setHydrator(new DoctrineHydrator($this->getServiceLocator()
-            ->get('em'), $className));
+        $form->setHydrator(new DoctrineHydrator($this->em(), $className));
         // populate form with entity
         $form->bind($entity);
 

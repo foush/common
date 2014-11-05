@@ -48,7 +48,7 @@ class Flattener extends Base
      */
     public function flatten(BaseInterface $entity)
     {
-        return $this->convertS3($entity->flatten(), $this->getServiceLocator()->get('s3'), $this->getServiceLocator()->get('s3_config')->get('bucket'));
+        return $this->convertS3($entity->flatten(), $this->getServiceLocator()->get('FzyCommon\Service\Aws\S3'), $this->getServiceLocator()->get('FzyCommon\Service\Aws\S3\Config')->get('bucket'));
     }
 
 }

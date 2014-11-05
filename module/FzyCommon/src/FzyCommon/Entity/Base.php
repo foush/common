@@ -96,7 +96,7 @@ abstract class Base implements BaseInterface
     /**
      * Helper method to allow entities to set $this->property = $entity->asDoctrineProperty()
      * which will translate setting a null entity to setting a null value
-     * @return \App\Entity\Base|null
+     * @return \FzyCommon\Entity\Base|null
      */
     public function asDoctrineProperty()
     {
