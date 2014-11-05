@@ -15,12 +15,12 @@ class UpdateResult extends Base
             $redirect = $this->url()->fromRoute($updater->getSuccessRedirectRouteName(), $updater->getSuccessRedirectRouteParams(), $updater->getSuccessRedirectRouteOptions());
         }
 
-        return new JsonModel(array(
+        return array(
             'success' => $updater->getValid(),
             'messages' => $updater->getErrorMessages(),
             'models' => $updater->getEntitiesAsJson(),
             'redirect' => $redirect,
-        ));
+        );
     }
 
     /**
