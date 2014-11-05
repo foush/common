@@ -74,11 +74,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
         $this->preProcess($params, $result);
         $processed = array();
         foreach ($result as $entity) {
-            // This can be revisited, as of 10/20/2014 reports are returning some irrelevant records
-            // without an associated claim, so we need a way of filtering out that data
-            if (($data = $this->process($entity, $params, $result, $asEntity)) && !empty($data)) {
-                $processed[] = $data;
-            }
+	        $processed[] = $this->process($entity, $params, $result, $asEntity);
         }
 
         $this->postProcess($params, $result, $processed);

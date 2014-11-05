@@ -1,6 +1,7 @@
 <?php
 namespace FzyCommon\Service\Search\Base;
 
+use FzyCommon\Exception\Search\InvalidResultOffset;
 use FzyCommon\Service\Search\Base;
 use FzyCommon\Util\Params;
 use Doctrine\ORM\Query;
@@ -17,83 +18,24 @@ use FzyCommon\Entity\BaseInterface as EntityInterface;
  */
 abstract class DQL extends Base
 {
+	/**
+	 * This function is used by the class to get
+	 * the entity's repository to be returned
+	 * @return mixed
+	 */
+	abstract protected function getRepository();
 
-    /**
+	/**
+	 * Alias for the primary repository in the DQL statement
+	 * @return string
+	 */
+	abstract public function getRepositoryAlias();
+
+	/**
      * Map of what tables have been joined in this query already
      * @var array
      */
     protected $joinMap = array();
-
-    /*
-     * @var array
-     */
-    /**
-     * @var array
-     */
-    protected $queryFilters = array();
-
-    /**
-     * @param $name
-     * @param Filter $filter
-     */
-    public function addQueryFilter($name, Filter $filter)
-    {
-        if (!$this->hasQueryFilter($name)) {
-            $this->queryFilters[$name] = $filter;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @param Filter $filter
-     */
-    public function hasQueryFilter($name)
-    {
-        return isset($this->queryFilters[$name]);
-    }
-
-    /**
-     * @param $name
-     */
-    public function removeQueryFilter($name)
-    {
-        unset($this->queryFilters[$name]);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getQueryFilters()
-    {
-        return $this->queryFilters;
-    }
-
-    /**
-     * @param array $filters
-     */
-    public function setQueryFilters($filters = array())
-    {
-        $this->removeQueryFilters();
-        foreach ($filters as $name => $filter) {
-            $this->addQueryFilter($name, $filter);
-        }
-
-        return $this;
-    }
-
-    /**
-     *
-     */
-    public function clearQueryFilters()
-    {
-        $this->queryFilters = array();
-
-        return $this;
-    }
 
     /**
      * This is invoked on every result of the singular/query
@@ -202,50 +144,9 @@ abstract class DQL extends Base
      */
     protected function addFilters(Params $params, QueryBuilder $qb)
     {
-        return $this->filterByStatus($params, $qb)->injectQueryFilters($params, $qb);
-    }
-
-    /**
-     * Filter by active/inactive
-     *
-     * NOTE: Any entity (s.a. User) not using 'active' as the status field will need to override
-     * this function.
-     *
-     * @param  Param        $params
-     * @param  QueryBuilder $qb
-     * @return $this
-     */
-    protected function filterByStatus(Params $params, QueryBuilder $qb)
-    {
-        if ($params->has('active')) {
-            if ($params->get('active') === EntityInterface::INACTIVE_STRING || $params->get('active') === EntityInterface::INACTIVE)
-                $active = EntityInterface::INACTIVE;
-            else
-                $active = EntityInterface::ACTIVE;
-
-            $qb->andWhere($qb->expr()->eq($this->alias('active'), ':active'))->setParameter('active', $active);
-        }
-
         return $this;
     }
 
-    /**
-     * @param  Param        $params
-     * @param  QueryBuilder $qb
-     * @return $this
-     */
-    protected function filterById(Params $params, QueryBuilder $qb)
-    {
-        if ($params->has('id')) {
-            $qb->andWhere($qb->expr()->eq($this->alias('id'), ':id'))->setParameter('id', $params->get('id'));
-        }
-
-        if ($params->has($this->getIdParam())) {
-            $qb->andWhere($qb->expr()->eq($this->alias('id'), ':id'))->setParameter('id', $params->get($this->getIdParam()));
-        }
-
-        return $this;
-    }
 
     /**
      * If there is some ordering that needs to be applied, do it here
@@ -305,63 +206,18 @@ abstract class DQL extends Base
      */
     public function find($id)
     {
-        // Updated to use DQL, this way we can inject ACL at the
-        // find and search levels
-        $params = Params::create(array('id' => $id, 'limit' => 1));
-
-        $qb = $this->em()->createQueryBuilder();
-        $qb->select($this->getRepositoryAlias())->from($this->getRepository(), $this->getRepositoryAlias());
-
-        $this->filterById($params, $qb);
-        $this->injectQueryFilters($params, $qb);
-        $this->addLimit($params, $qb);
-
-        try {
-            $entity = $qb->getQuery()->getSingleResult();
-        } catch (\Exception $e) {
-            // getSingleResult throws an exception when no result is found
-            // create a null object and let the rest of the function
-            // determine how to handle it (i.e. throw NotFound exception)
-            $class = $this->getRepository() . 'Null';
-            $entity = new $class();
-        }
-
-        if ($entity->isNull()) {
-            throw new NotFound("Unable to find ".$this->getRepository()." with id ".$id);
-        }
-
-        return $entity;
+        $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
+	    try {
+		    return $this->reset()->search( $params, true )->getResult();
+	    } catch (InvalidResultOffset $e) {
+		    $class = $this->getRepository() . 'Null';
+		    if (!class_exists($class)) {
+			    throw new \RuntimeException('Unable to instantiate null class "'.$class.'"');
+		    }
+		    $entity = new $class();
+		    return $entity;
+	    }
     }
-
-    /**
-     * Apply injected query filters.
-     *
-     * @param Param        $params
-     * @param QueryBuilder $qb
-     */
-    protected function injectQueryFilters(Params $params, QueryBuilder $qb)
-    {
-        foreach ($this->getQueryFilters() as $name => $filter) {
-            /* @var Filter $filter */
-            $filter->filter($params, $qb, $this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * This function is used by the class to get
-     * the entity's repository to be returned
-     * @return mixed
-     */
-    abstract protected function getRepository();
-
-    /**
-     * Alias for the primary repository in the DQL statement
-     * @return string
-     */
-    abstract public function getRepositoryAlias();
-
 
     /**
      * Convenience method to add an AND WHERE clause in a common format.
@@ -401,9 +257,7 @@ abstract class DQL extends Base
      */
     public function reset()
     {
-        $this->queryFilters = array();
         $this->joinMap = array();
-
         return parent::reset();
     }
 
