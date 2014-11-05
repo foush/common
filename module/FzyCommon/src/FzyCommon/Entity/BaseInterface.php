@@ -2,7 +2,7 @@
 
 namespace FzyCommon\Entity;
 
-interface BaseInterface
+interface BaseInterface extends \JsonSerializable
 {
     const DEFAULT_DATE_FORMAT = 'Y-m-d';
 
@@ -51,13 +51,16 @@ interface BaseInterface
 
     /**
      * Helper method to allow entities to return
-     * $this->nullGet('Property\Class\Name', $this->property)
+     * $this->nullGet($this->property)
      * and have the entity never return an actual null
-     * @param  type                              $className
+     * The second parameter is optional and allows overriding of
+     * the null object instantiated by naming convention (classname + 'Null')
+     *
      * @param  \FzyCommon\Entity\BaseInterface $entity
+     * @param  \FzyCommon\Entity\BaseNull|null $nullObject
      * @return \FzyCommon\Entity\BaseInterface
      */
-    public function nullGet($className, BaseInterface $entity = null);
+	public function nullGet(BaseInterface $entity = null, BaseNull $nullObject = null);
 
     /**
      * Used to verify the value is valid to be assigned to timestamp property.

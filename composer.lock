@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4b1dd42c4031c4bebe68d554fee46ea5",
+    "hash": "b304719f1d05aacc729cb4d84ef6bf78",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -216,12 +216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "8c5148e0ef8cee4afe86d45ba98f7b6d96e780d0"
+                "reference": "38ed66e6606309bec203a9df506ffa26d956d21d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/8c5148e0ef8cee4afe86d45ba98f7b6d96e780d0",
-                "reference": "8c5148e0ef8cee4afe86d45ba98f7b6d96e780d0",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/38ed66e6606309bec203a9df506ffa26d956d21d",
+                "reference": "38ed66e6606309bec203a9df506ffa26d956d21d",
                 "shasum": ""
             },
             "require": {
@@ -274,7 +274,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2014-09-24 12:11:27"
+            "time": "2014-11-05 15:56:21"
         },
         {
             "name": "doctrine/common",
@@ -1287,7 +1287,7 @@
     "stability-flags": [],
     "prefer-stable": false,
     "platform": {
-        "php": ">=5.3.23"
+        "php": ">=5.4"
     },
     "platform-dev": []
 }
