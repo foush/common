@@ -1,7 +1,6 @@
 <?php
 namespace FzyCommon\Service\Update;
 
-use FzyCommon\Annotation\Subform;
 use FzyCommon\Entity\BaseInterface;
 use FzyCommon\Exception\Search\NoResultsToGet;
 use FzyCommon\Exception\Update\FailedLookup;
@@ -92,12 +91,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
     protected $formValidators;
 
     /**
-     * Array mapping a getter string to a configured form
-     * @var array
-     */
-    protected $formMap = array();
-
-    /**
      * Reset state of service
      * @return $this
      */
@@ -110,7 +103,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
         unset($this->params);
         $this->setOperation(self::OPERATION_NONE);
         unset($this->formValidators);
-        $this->formMap = array();
         $this->errorMessages = array();
 
         return $this;
@@ -380,13 +372,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
                     ));
                 $forms[$tag] = $form;
             }
-            // set up main form with map
-            /* @var $mainForm \Zend\Form\Form */
-            $mainForm = $forms[static::MAIN_TAG];
-            $options = $mainForm->getOptions();
-            $options[Subform::OPTION_MAP_ARRAY] = $this->formMap;
-            $mainForm->setOptions($options);
-
             $this->forms = $forms;
         }
 
@@ -779,8 +764,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
 
     public function setFormMapEntry($getterString, $configuredForm)
     {
-        $this->formMap[$getterString] = $configuredForm;
-
         return $this;
     }
 
