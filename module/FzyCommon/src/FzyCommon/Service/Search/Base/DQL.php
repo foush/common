@@ -60,17 +60,27 @@ abstract class DQL extends Base
      */
     protected function querySearch(Params $params)
     {
-        $qb = $this->em()->createQueryBuilder();
-
-        $this->setupQueryBuilder($params, $qb);
-
-        $this->addFilters($params, $qb); // add filters to the query
-        $this->addOrdering($params, $qb); // add ordering constraints
-        $this->addOffset($params, $qb); // add offset constraints
-        $this->addLimit($params, $qb); // add limit constraint
-
+		$qb = $this->getCustomizedQueryBuilder($params);
         return $this->getQBResult($params, $this->queryHook($params, $qb));
     }
+
+	/**
+	 * @param Params $params
+	 *
+	 * @return QueryBuilder
+	 */
+	protected function getCustomizedQueryBuilder(Params $params)
+	{
+		$qb = $this->em()->createQueryBuilder();
+
+		$this->setupQueryBuilder($params, $qb);
+
+		$this->addFilters($params, $qb); // add filters to the query
+		$this->addOrdering($params, $qb); // add ordering constraints
+		$this->addOffset($params, $qb); // add offset constraints
+		$this->addLimit($params, $qb); // add limit constraint
+		return $qb;
+	}
 
     /**
      * Returns an array or other iterable object containing results
@@ -144,8 +154,14 @@ abstract class DQL extends Base
      */
     protected function addFilters(Params $params, QueryBuilder $qb)
     {
+	    $this->filterByIdentifier($params, $qb);
         return $this;
     }
+
+	protected function filterByIdentifier(Params $params, QueryBuilder $qb)
+	{
+		return $this->quickParamFilter($params, $qb, $this->getIdParam(), 'id');
+	}
 
 
     /**
@@ -207,16 +223,12 @@ abstract class DQL extends Base
     public function find($id)
     {
         $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
-	    try {
-		    return $this->reset()->search( $params, true )->getResult();
-	    } catch (InvalidResultOffset $e) {
-		    $class = $this->getRepository() . 'Null';
-		    if (!class_exists($class)) {
-			    throw new \RuntimeException('Unable to instantiate null class "'.$class.'"');
-		    }
-		    $entity = new $class();
-		    return $entity;
+	    $qb = $this->getCustomizedQueryBuilder($params);
+	    $results = $this->getQBResult($params, $this->queryHook($params, $qb));
+	    if ($results->count() != 1) {
+		    throw new NotFound("Unable to locate entity ".$this->getRepository()." with id ".$id);
 	    }
+	    return reset($results);
     }
 
     /**
