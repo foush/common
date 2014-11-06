@@ -34,4 +34,10 @@ interface ResultProviderInterface
      * @return string
      */
     public function getResultTag();
+
+	/**
+	 * For use with datatables
+	 * @return int
+	 */
+	public function getDrawNumber();
 }

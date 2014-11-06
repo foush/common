@@ -21,6 +21,9 @@ class Result extends BaseService
                 'offset' => $provider->getOffset(),
                 'tag' => $provider->getResultTag(),
             ),
+	        'draw' => $provider->getDrawNumber(),
+	        'recordsTotal' => $provider->getTotal(),
+	        'recordsFiltered' => $provider->getTotal(),
         );
     }
 

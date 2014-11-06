@@ -31,6 +31,8 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     protected $results;
 
+	protected $drawNumber;
+
     /**
      * Resets any params or results currently in this object
      *
@@ -39,7 +41,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
     public function reset()
     {
         unset($this->results);
-
+		unset($this->drawNumber);
         return $this;
     }
 
@@ -149,6 +151,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
     {
         $this->setLimit(Page::limit($params));
         $this->setOffset(Page::offset($params));
+	    $this->drawNumber = $params->get('draw');
 
         return $this;
     }
@@ -298,5 +301,14 @@ abstract class Base extends BaseService implements ResultProviderInterface
      * @return string
      */
     abstract public function getResultTag();
+
+	/**
+	 * For use with datatables
+	 * @return int
+	 */
+	public function getDrawNumber()
+	{
+		return $this->drawNumber;
+	}
 
 }
