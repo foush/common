@@ -3,6 +3,7 @@ namespace FzyCommon\Service\Update;
 
 use FzyCommon\Entity\BaseInterface;
 use FzyCommon\Exception\Search\NoResultsToGet;
+use FzyCommon\Exception\Search\NotFound;
 use FzyCommon\Exception\Update\FailedLookup;
 use FzyCommon\Service\Search\Base as SearchService;
 use FzyCommon\Util\Params;
@@ -122,7 +123,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
         return $mainEntity;
     }
 
-
     /**
      * @param  Param                                      $params
      * @param  bool                                       $readonly
@@ -135,10 +135,11 @@ class Base extends UpdateService implements EventManagerAwareInterface
 	    try {
 		    $mainEntity = $search->identitySearch($params);
 		    $this->setOperation(self::OPERATION_UPDATE);
-	    } catch (NoResultsToGet $e) {
+	    } catch (NotFound $e) {
 			$mainEntity = $this->createNewEntity($params);
 		    $this->setOperation(self::OPERATION_CREATE);
 	    }
+	    $this->entity = $mainEntity;
 	    return $this;
     }
 
@@ -448,7 +449,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     protected function entityToForm(BaseInterface $entity)
     {
-        return $this->getServiceLocator()->get('entity_to_form')->convertEntity($entity);
+        return $this->getServiceLocator()->get('FzyCommon\Service\EntityToForm')->convertEntity($entity);
     }
 
     /**

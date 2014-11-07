@@ -128,28 +128,33 @@ class NgInit extends Base
 
     public function __toString()
     {
-        $format = '';
-        $args = array();
-        foreach ($this->itemsToInit as $item) {
-            if ($item instanceof BaseInterface) {
-                $item = $this->getService('flattener')->flatten($item);
-            }
-            $args[] = htmlentities(json_encode($item), ENT_COMPAT);
-        }
-        if ($this->initAssignment) {
-            $varNames = is_array($this->initMethod) ? $this->initMethod : array($this->initMethod);
-            $varValues = array_splice($args, 0, count($varNames));
-            $format = 'data-ng-init="'.str_repeat('%s=%s;', count($varNames)).'"';
-            $args = array();
-            foreach ($varNames as $varName) {
-                $args[] = $varName;
-                $args[] = array_shift($varValues);
-            }
-        } else {
-            $format = 'data-ng-init="%s(%s'.(count($args) >= 0 ? str_repeat(',%s', count($args) - 1) : '').')"';
-            array_unshift($args, $this->initMethod);
-        }
+	    try {
+		    $format = '';
+		    $args   = array();
+		    foreach ( $this->itemsToInit as $item ) {
+			    if ( $item instanceof BaseInterface ) {
+				    $item = $this->getService( 'FzyCommon\Service\Flattener' )->flatten( $item );
+			    }
+			    $args[] = htmlentities( json_encode( $item ), ENT_COMPAT );
+		    }
+		    if ( $this->initAssignment ) {
+			    $varNames  = is_array( $this->initMethod ) ? $this->initMethod : array( $this->initMethod );
+			    $varValues = array_splice( $args, 0, count( $varNames ) );
+			    $format    = 'data-ng-init="' . str_repeat( '%s=%s;', count( $varNames ) ) . '"';
+			    $args      = array();
+			    foreach ( $varNames as $varName ) {
+				    $args[] = $varName;
+				    $args[] = array_shift( $varValues );
+			    }
+		    } else {
+			    $format = 'data-ng-init="%s(%s' . ( count( $args ) >= 0 ? str_repeat( ',%s',
+					    count( $args ) - 1 ) : '' ) . ')"';
+			    array_unshift( $args, $this->initMethod );
+		    }
 
-        return vsprintf($format, $args);
+		    return vsprintf( $format, $args );
+	    } catch (\Exception $e) {
+		    return '<strong>Exception: </strong> '.$e->getMessage() . ' ' . $e->getTraceAsString();
+	    }
     }
 }
