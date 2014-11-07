@@ -122,19 +122,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
         return $mainEntity;
     }
 
-    /**
-     * @param  Param                                      $params
-     * @param  bool                                       $readonly
-     * @return $this
-     * @throws \FzyCommon\Exception\Update\FailedLookup
-     */
-    public function newEntity()
-    {
-
-        $this->setEntity($this->createNewEntity());
-
-        return $this;
-    }
 
     /**
      * @param  Param                                      $params
