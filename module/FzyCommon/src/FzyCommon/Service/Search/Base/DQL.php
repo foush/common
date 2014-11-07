@@ -222,13 +222,20 @@ abstract class DQL extends Base
      */
     public function find($id)
     {
-        $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
+	    $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
 	    $qb = $this->getCustomizedQueryBuilder($params);
 	    $results = $this->getQBResult($params, $this->queryHook($params, $qb));
 	    if ($results->count() != 1) {
 		    throw new NotFound("Unable to locate entity ".$this->getRepository()." with id ".$id);
 	    }
-	    return reset($results);
+	    /* @var $results \Doctrine\ORM\Tools\Pagination\Paginator */
+	    /**
+	     * Note: this is a paginator object so the only way to access result elements is by iterating
+	     */
+	    foreach ($results as $result) {
+		    // return the first (and only) result
+		    return $result;
+	    }
     }
 
     /**
