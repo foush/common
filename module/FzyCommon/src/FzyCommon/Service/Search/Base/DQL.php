@@ -8,7 +8,6 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use FzyCommon\Exception\Search\NotFound;
-use FzyCommon\Service\Filter\DQL\Filter;
 use FzyCommon\Entity\BaseInterface as EntityInterface;
 
 /**
@@ -154,17 +153,57 @@ abstract class DQL extends Base
      */
     protected function addFilters(Params $params, QueryBuilder $qb)
     {
-	    $this->filterByIdentifier($params, $qb);
+	    $this->filterByIdentifier($params, $qb)
+	        ->filterBySearch($params, $qb);
         return $this;
     }
 
+	/**
+	 * Filters by specified id
+	 * @param Params $params
+	 * @param QueryBuilder $qb
+	 *
+	 * @return DQL
+	 */
 	protected function filterByIdentifier(Params $params, QueryBuilder $qb)
 	{
 		return $this->quickParamFilter($params, $qb, $this->getIdParam(), 'id');
 	}
 
+	/**
+	 * Default search hook for datatables
+	 *
+	 * @param Params $params
+	 * @param QueryBuilder $qb
+	 *
+	 * @return $this
+	 */
+	protected function filterBySearch(Params $params, QueryBuilder $qb)
+	{
+		if ($query = $params->getWrapped('search')->get('value')) {
+			$this->searchFilter($params, $qb, $query);
+		}
+		return $this;
+	}
 
-    /**
+	/**
+	 * This function is passed the datatables search query value
+	 * and should appropriately filter the query builder object
+	 * based on what makes sense for this entity.
+	 *
+	 * @param Params $params
+	 * @param QueryBuilder $qb
+	 * @param $search
+	 *
+	 * @return $this
+	 */
+	protected function searchFilter(Params $params, QueryBuilder $qb, $search)
+	{
+		$qb->andWhere($this->alias('id') . ' LIKE :search')->setParameter('search', $search);
+		return $this;
+	}
+
+	/**
      * If there is some ordering that needs to be applied, do it here
      * @param  Param        $params
      * @param  QueryBuilder $qb
