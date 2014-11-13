@@ -1,14 +1,12 @@
 <?php
 namespace FzyCommon\Service\Search\Base;
 
-use FzyCommon\Exception\Search\InvalidResultOffset;
 use FzyCommon\Service\Search\Base;
 use FzyCommon\Util\Params;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use FzyCommon\Exception\Search\NotFound;
-use FzyCommon\Entity\BaseInterface as EntityInterface;
 
 /**
  * Class DQL
@@ -17,20 +15,20 @@ use FzyCommon\Entity\BaseInterface as EntityInterface;
  */
 abstract class DQL extends Base
 {
-	/**
-	 * This function is used by the class to get
-	 * the entity's repository to be returned
-	 * @return mixed
-	 */
-	abstract protected function getRepository();
+    /**
+     * This function is used by the class to get
+     * the entity's repository to be returned
+     * @return mixed
+     */
+    abstract protected function getRepository();
 
-	/**
-	 * Alias for the primary repository in the DQL statement
-	 * @return string
-	 */
-	abstract public function getRepositoryAlias();
+    /**
+     * Alias for the primary repository in the DQL statement
+     * @return string
+     */
+    abstract public function getRepositoryAlias();
 
-	/**
+    /**
      * Map of what tables have been joined in this query already
      * @var array
      */
@@ -59,27 +57,29 @@ abstract class DQL extends Base
      */
     protected function querySearch(Params $params)
     {
-		$qb = $this->getCustomizedQueryBuilder($params);
+        $qb = $this->getCustomizedQueryBuilder($params);
+
         return $this->getQBResult($params, $this->queryHook($params, $qb));
     }
 
-	/**
-	 * @param Params $params
-	 *
-	 * @return QueryBuilder
-	 */
-	protected function getCustomizedQueryBuilder(Params $params)
-	{
-		$qb = $this->em()->createQueryBuilder();
+    /**
+     * @param Params $params
+     *
+     * @return QueryBuilder
+     */
+    protected function getCustomizedQueryBuilder(Params $params)
+    {
+        $qb = $this->em()->createQueryBuilder();
 
-		$this->setupQueryBuilder($params, $qb);
+        $this->setupQueryBuilder($params, $qb);
 
-		$this->addFilters($params, $qb); // add filters to the query
-		$this->addOrdering($params, $qb); // add ordering constraints
-		$this->addOffset($params, $qb); // add offset constraints
-		$this->addLimit($params, $qb); // add limit constraint
-		return $qb;
-	}
+        $this->addFilters($params, $qb); // add filters to the query
+        $this->addOrdering($params, $qb); // add ordering constraints
+        $this->addOffset($params, $qb); // add offset constraints
+        $this->addLimit($params, $qb); // add limit constraint
+
+        return $qb;
+    }
 
     /**
      * Returns an array or other iterable object containing results
@@ -153,57 +153,60 @@ abstract class DQL extends Base
      */
     protected function addFilters(Params $params, QueryBuilder $qb)
     {
-	    $this->filterByIdentifier($params, $qb)
-	        ->filterBySearch($params, $qb);
+        $this->filterByIdentifier($params, $qb)
+            ->filterBySearch($params, $qb);
+
         return $this;
     }
 
-	/**
-	 * Filters by specified id
-	 * @param Params $params
-	 * @param QueryBuilder $qb
-	 *
-	 * @return DQL
-	 */
-	protected function filterByIdentifier(Params $params, QueryBuilder $qb)
-	{
-		return $this->quickParamFilter($params, $qb, $this->getIdParam(), 'id');
-	}
+    /**
+     * Filters by specified id
+     * @param Params       $params
+     * @param QueryBuilder $qb
+     *
+     * @return DQL
+     */
+    protected function filterByIdentifier(Params $params, QueryBuilder $qb)
+    {
+        return $this->quickParamFilter($params, $qb, $this->getIdParam(), 'id');
+    }
 
-	/**
-	 * Default search hook for datatables
-	 *
-	 * @param Params $params
-	 * @param QueryBuilder $qb
-	 *
-	 * @return $this
-	 */
-	protected function filterBySearch(Params $params, QueryBuilder $qb)
-	{
-		if ($query = $params->getWrapped('search')->get('value')) {
-			$this->searchFilter($params, $qb, $query);
-		}
-		return $this;
-	}
+    /**
+     * Default search hook for datatables
+     *
+     * @param Params       $params
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    protected function filterBySearch(Params $params, QueryBuilder $qb)
+    {
+        if ($query = $params->getWrapped('search')->get('value')) {
+            $this->searchFilter($params, $qb, $query);
+        }
 
-	/**
-	 * This function is passed the datatables search query value
-	 * and should appropriately filter the query builder object
-	 * based on what makes sense for this entity.
-	 *
-	 * @param Params $params
-	 * @param QueryBuilder $qb
-	 * @param $search
-	 *
-	 * @return $this
-	 */
-	protected function searchFilter(Params $params, QueryBuilder $qb, $search)
-	{
-		$qb->andWhere($this->alias('id') . ' LIKE :search')->setParameter('search', $search);
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
+    /**
+     * This function is passed the datatables search query value
+     * and should appropriately filter the query builder object
+     * based on what makes sense for this entity.
+     *
+     * @param Params       $params
+     * @param QueryBuilder $qb
+     * @param $search
+     *
+     * @return $this
+     */
+    protected function searchFilter(Params $params, QueryBuilder $qb, $search)
+    {
+        $qb->andWhere($this->alias('id') . ' LIKE :search')->setParameter('search', $search);
+
+        return $this;
+    }
+
+    /**
      * If there is some ordering that needs to be applied, do it here
      * @param  Param        $params
      * @param  QueryBuilder $qb
@@ -261,20 +264,20 @@ abstract class DQL extends Base
      */
     public function find($id)
     {
-	    $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
-	    $qb = $this->getCustomizedQueryBuilder($params);
-	    $results = $this->getQBResult($params, $this->queryHook($params, $qb));
-	    if ($results->count() != 1) {
-		    throw new NotFound("Unable to locate entity ".$this->getRepository()." with id ".$id);
-	    }
-	    /* @var $results \Doctrine\ORM\Tools\Pagination\Paginator */
-	    /**
-	     * Note: this is a paginator object so the only way to access result elements is by iterating
-	     */
-	    foreach ($results as $result) {
-		    // return the first (and only) result
-		    return $result;
-	    }
+        $params = Params::create(array($this->getIdParam() => $id, 'limit' => 1));
+        $qb = $this->getCustomizedQueryBuilder($params);
+        $results = $this->getQBResult($params, $this->queryHook($params, $qb));
+        if ($results->count() != 1) {
+            throw new NotFound("Unable to locate entity ".$this->getRepository()." with id ".$id);
+        }
+        /* @var $results \Doctrine\ORM\Tools\Pagination\Paginator */
+        /**
+         * Note: this is a paginator object so the only way to access result elements is by iterating
+         */
+        foreach ($results as $result) {
+            // return the first (and only) result
+            return $result;
+        }
     }
 
     /**
@@ -316,6 +319,7 @@ abstract class DQL extends Base
     public function reset()
     {
         $this->joinMap = array();
+
         return parent::reset();
     }
 

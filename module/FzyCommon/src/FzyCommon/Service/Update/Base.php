@@ -2,7 +2,6 @@
 namespace FzyCommon\Service\Update;
 
 use FzyCommon\Entity\BaseInterface;
-use FzyCommon\Exception\Search\NoResultsToGet;
 use FzyCommon\Exception\Search\NotFound;
 use FzyCommon\Exception\Update\FailedLookup;
 use FzyCommon\Service\Search\Base as SearchService;
@@ -109,12 +108,12 @@ class Base extends UpdateService implements EventManagerAwareInterface
         return $this;
     }
 
-	/**
-	 * Creates a new instance of the entity this service updates
-	 * @param Params $params
-	 *
-	 * @return mixed
-	 */
+    /**
+     * Creates a new instance of the entity this service updates
+     * @param Params $params
+     *
+     * @return mixed
+     */
     public function createNewEntity(Params $params)
     {
         $class = '\\'.static::MAIN_ENTITY_CLASS;
@@ -124,29 +123,29 @@ class Base extends UpdateService implements EventManagerAwareInterface
     }
 
     /**
-     * @param  Param                                      $params
-     * @param  bool                                       $readonly
+     * @param  Param                                    $params
+     * @param  bool                                     $readonly
      * @return $this
      * @throws \FzyCommon\Exception\Update\FailedLookup
      */
     public function setMainEntityFromParam(Params $params, SearchService $search)
     {
-	    $mainEntity = null;
-	    try {
-		    $mainEntity = $search->identitySearch($params);
-		    $this->setOperation(self::OPERATION_UPDATE);
-	    } catch (NotFound $e) {
-			$mainEntity = $this->createNewEntity($params);
-		    $this->setOperation(self::OPERATION_CREATE);
-	    }
-	    $this->entity = $mainEntity;
-	    return $this;
-    }
+        $mainEntity = null;
+        try {
+            $mainEntity = $search->identitySearch($params);
+            $this->setOperation(self::OPERATION_UPDATE);
+        } catch (NotFound $e) {
+            $mainEntity = $this->createNewEntity($params);
+            $this->setOperation(self::OPERATION_CREATE);
+        }
+        $this->entity = $mainEntity;
 
+        return $this;
+    }
 
     /**
      * @param  Params $params
-     * @param  array $options
+     * @param  array  $options
      * @return $this
      */
     public function update(Params $params, $options = array())
@@ -172,7 +171,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
 
     /**
      * @param $tag
-     * @param  Form  $form
+     * @param  Form   $form
      * @param  Params $params
      * @return bool
      */
@@ -634,8 +633,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
         return $this->getSuccessMessage($this->getOperation());
     }
 
-
-
     /**
      * @return Params
      */
@@ -748,7 +745,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
 
         return $this;
     }
-
 
     public function setFormMapEntry($getterString, $configuredForm)
     {

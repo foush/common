@@ -2,7 +2,6 @@
 namespace FzyCommon\Util;
 
 use Zend\Json\Json;
-use Zend\Mvc\Controller\Plugin\Params as ParamsPlugin;
 use Zend\Http\Request;
 
 /**
@@ -38,16 +37,16 @@ class Params
         return $this->has($key) ? $this->params[$key] : $default;
     }
 
-	/**
-	 * @param $key
-	 * @param array $default
-	 *
-	 * @return Params
-	 */
-	public function getWrapped($key, $default = array())
-	{
-		return Params::create($this->get($key, $default));
-	}
+    /**
+     * @param $key
+     * @param array $default
+     *
+     * @return Params
+     */
+    public function getWrapped($key, $default = array())
+    {
+        return Params::create($this->get($key, $default));
+    }
 
     /**
      * Additionally converts 1, "1", and "true" to true and 0, "0", and "false" to false

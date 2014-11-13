@@ -31,7 +31,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     protected $results;
 
-	protected $drawNumber;
+    protected $drawNumber;
 
     /**
      * Resets any params or results currently in this object
@@ -41,7 +41,8 @@ abstract class Base extends BaseService implements ResultProviderInterface
     public function reset()
     {
         unset($this->results);
-		unset($this->drawNumber);
+        unset($this->drawNumber);
+
         return $this;
     }
 
@@ -49,7 +50,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
      * Main lifecycle of this service;
      * Using the passed in $params value
      * @param  Params $params
-     * @param  bool  $asEntity - keep result as entity
+     * @param  bool   $asEntity - keep result as entity
      * @return $this
      */
     public function search(Params $params, $asEntity = false)
@@ -76,7 +77,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
         $this->preProcess($params, $result);
         $processed = array();
         foreach ($result as $entity) {
-	        $processed[] = $this->process($entity, $params, $result, $asEntity);
+            $processed[] = $this->process($entity, $params, $result, $asEntity);
         }
 
         $this->postProcess($params, $result, $processed);
@@ -86,14 +87,14 @@ abstract class Base extends BaseService implements ResultProviderInterface
     }
 
     /**
-     * @param  Param                                  $params
+     * @param  Param                                $params
      * @return \FzyCommon\Entity\BaseInterface
      * @throws \FzyCommon\Exception\Search\NotFound
      */
     public function identitySearch(Params $params)
     {
         if ($params->get($this->getIdParam()) == null) {
-	        throw new NotFound('Unable to locate this entity');
+            throw new NotFound('Unable to locate this entity');
         }
 
         return $this->find($params->get($this->getIdParam()));
@@ -151,7 +152,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
     {
         $this->setLimit(Page::limit($params));
         $this->setOffset(Page::offset($params));
-	    $this->drawNumber = $params->get('draw');
+        $this->drawNumber = $params->get('draw');
 
         return $this;
     }
@@ -217,7 +218,7 @@ abstract class Base extends BaseService implements ResultProviderInterface
 
     /**
      * Convenience method for retrieving a single result (defaults to return the first)
-     * @param  int                                               $offset
+     * @param  int                                             $offset
      * @return mixed
      * @throws \FzyCommon\Exception\Search\NoResultsToGet
      * @throws \FzyCommon\Exception\Search\InvalidResultOffset
@@ -302,13 +303,13 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     abstract public function getResultTag();
 
-	/**
-	 * For use with datatables
-	 * @return int
-	 */
-	public function getDrawNumber()
-	{
-		return $this->drawNumber;
-	}
+    /**
+     * For use with datatables
+     * @return int
+     */
+    public function getDrawNumber()
+    {
+        return $this->drawNumber;
+    }
 
 }

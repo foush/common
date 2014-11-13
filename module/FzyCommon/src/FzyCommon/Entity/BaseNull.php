@@ -58,17 +58,17 @@ class BaseNull implements BaseInterface
         return $this;
     }
 
-	/**
-	 * Helper method to allow entities to return
-	 * $this->nullGet($this->property)
-	 * and have the entity never return an actual null
-	 * The second parameter is optional and allows overriding of
-	 * the null object instantiated by naming convention (classname + 'Null')
-	 *
-	 * @param  \FzyCommon\Entity\BaseInterface $entity
-	 * @param  \FzyCommon\Entity\BaseNull|null $nullObject
-	 * @return \FzyCommon\Entity\BaseInterface
-	 */
+    /**
+     * Helper method to allow entities to return
+     * $this->nullGet($this->property)
+     * and have the entity never return an actual null
+     * The second parameter is optional and allows overriding of
+     * the null object instantiated by naming convention (classname + 'Null')
+     *
+     * @param  \FzyCommon\Entity\BaseInterface $entity
+     * @param  \FzyCommon\Entity\BaseNull|null $nullObject
+     * @return \FzyCommon\Entity\BaseInterface
+     */
     public function nullGet(BaseInterface $entity = null, BaseNull $nullObject = null)
     {
         return new BaseNull();
@@ -127,15 +127,16 @@ class BaseNull implements BaseInterface
         return $this;
     }
 
-	/**
-	 * (PHP 5 &gt;= 5.4.0)<br/>
-	 * Specify data which should be serialized to JSON
-	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 */
-	function jsonSerialize() {
-		return json_encode(array());
-	}
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     *               which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return json_encode(array());
+    }
 
 }

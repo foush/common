@@ -22,7 +22,6 @@ abstract class Base implements BaseInterface
      */
     protected $id;
 
-
     /**
      * Ephemeral value set per-request. Not to be stored in the db
      * @var
@@ -115,24 +114,25 @@ abstract class Base implements BaseInterface
         return $this;
     }
 
-	/**
-	 * Helper method to allow entities to return
-	 * $this->nullGet($this->property)
-	 * and have the entity never return an actual null
-	 * The second parameter is optional and allows overriding of
-	 * the null object instantiated by naming convention (classname + 'Null')
-	 *
-	 * @param  \FzyCommon\Entity\BaseInterface $entity
-	 * @param  \FzyCommon\Entity\BaseNull|null $nullObject
-	 * @return \FzyCommon\Entity\BaseInterface
-	 */
+    /**
+     * Helper method to allow entities to return
+     * $this->nullGet($this->property)
+     * and have the entity never return an actual null
+     * The second parameter is optional and allows overriding of
+     * the null object instantiated by naming convention (classname + 'Null')
+     *
+     * @param  \FzyCommon\Entity\BaseInterface $entity
+     * @param  \FzyCommon\Entity\BaseNull|null $nullObject
+     * @return \FzyCommon\Entity\BaseInterface
+     */
     public function nullGet(BaseInterface $entity = null, BaseNull $nullObject = null)
     {
-        if ($entity === null){
-	        if ($nullObject === null) {
-		        throw new \RuntimeException('Unable to instantiate null class');
-	        }
-			return $nullObject;
+        if ($entity === null) {
+            if ($nullObject === null) {
+                throw new \RuntimeException('Unable to instantiate null class');
+            }
+
+            return $nullObject;
         }
 
         return $entity;
@@ -150,29 +150,30 @@ abstract class Base implements BaseInterface
     public function tsSet($ts, $createIfEmpty = true, $timezone = false)
     {
         if ($ts instanceof \DateTime) {
-	        return $this->setDtTz($ts, $timezone);
-        } else if (is_string($ts)) {
-	        return $this->setDtTz(new \DateTime($ts), $timezone);
-        } else if (empty($ts)) {
-	        return $createIfEmpty ? $this->setDtTz(new \DateTime(), $timezone) : null;
+            return $this->setDtTz($ts, $timezone);
+        } elseif (is_string($ts)) {
+            return $this->setDtTz(new \DateTime($ts), $timezone);
+        } elseif (empty($ts)) {
+            return $createIfEmpty ? $this->setDtTz(new \DateTime(), $timezone) : null;
         }
 
         throw new \InvalidArgumentException("The passed value '".var_export($ts, true)."' is not a valid timestamp.");
     }
 
-	/**
-	 * @param \DateTime $dt
-	 * @param $timezone
-	 *
-	 * @return \DateTime
-	 */
-	protected function setDtTz(\DateTime $dt, $timezone)
-	{
-		if ($timezone) {
-			$dt->setTimezone(new \DateTimeZone($timezone));
-		}
-		return $dt;
-	}
+    /**
+     * @param \DateTime $dt
+     * @param $timezone
+     *
+     * @return \DateTime
+     */
+    protected function setDtTz(\DateTime $dt, $timezone)
+    {
+        if ($timezone) {
+            $dt->setTimezone(new \DateTimeZone($timezone));
+        }
+
+        return $dt;
+    }
 
     /**
      * Used to ensure a \DateTime is returned. If the given property is null, a new \DateTime
@@ -194,9 +195,9 @@ abstract class Base implements BaseInterface
      *
      * NOTE: the datetime is cloned and converted to EDT timezone since all doctrine
      * data is UTC (coming from RDS)
-     * @param  \DateTime        $tsProperty
+     * @param  \DateTime $tsProperty
      * @param $format
-     * @param  string $timezone   - Pass in a timezone string or false
+     * @param  string    $timezone   - Pass in a timezone string or false
      * @return string
      */
     public function tsGetFormatted(\DateTime $tsProperty = null, $format = self::DEFAULT_DATE_FORMAT, $timezone = null)
@@ -205,7 +206,8 @@ abstract class Base implements BaseInterface
             return '';
         }
         $shiftedTs = clone $tsProperty;
-	    return $this->setDtTz($shiftedTs, $timezone)->format($format);
+
+        return $this->setDtTz($shiftedTs, $timezone)->format($format);
     }
 
     public function __toString()
@@ -234,16 +236,16 @@ abstract class Base implements BaseInterface
         return $this;
     }
 
-	/**
-	 * (PHP 5 &gt;= 5.4.0)<br/>
-	 * Specify data which should be serialized to JSON
-	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 */
-	function jsonSerialize() {
-		return ((string)$this);
-	}
-
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     *               which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return ((string) $this);
+    }
 
 }

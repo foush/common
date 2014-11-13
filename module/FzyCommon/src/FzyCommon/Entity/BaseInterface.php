@@ -60,7 +60,7 @@ interface BaseInterface extends \JsonSerializable
      * @param  \FzyCommon\Entity\BaseNull|null $nullObject
      * @return \FzyCommon\Entity\BaseInterface
      */
-	public function nullGet(BaseInterface $entity = null, BaseNull $nullObject = null);
+    public function nullGet(BaseInterface $entity = null, BaseNull $nullObject = null);
 
     /**
      * Used to verify the value is valid to be assigned to timestamp property.

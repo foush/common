@@ -4,7 +4,6 @@ namespace FzyCommon\Controller\Plugin;
 
 use FzyCommon\Service\Update\Base as Update;
 use Zend\Http\PhpEnvironment\Response;
-use Zend\View\Model\JsonModel;
 
 class UpdateResult extends Base
 {
@@ -15,10 +14,10 @@ class UpdateResult extends Base
             $this->flashMessenger()->addSuccessMessage($updater->getFormattedSuccessMessage());
             $redirect = $this->url()->fromRoute($updater->getSuccessRedirectRouteName(), $updater->getSuccessRedirectRouteParams(), $updater->getSuccessRedirectRouteOptions());
         } else {
-	        // set error
-	        /* @var $response \Zend\Http\PhpEnvironment\Response */
-	        $response = $this->getService('Response');
-	        $response->setStatusCode(Response::STATUS_CODE_400);
+            // set error
+            /* @var $response \Zend\Http\PhpEnvironment\Response */
+            $response = $this->getService('Response');
+            $response->setStatusCode(Response::STATUS_CODE_400);
         }
 
         return array(

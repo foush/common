@@ -4,7 +4,6 @@ namespace FzyCommon\Service;
 use FzyCommon\Entity\BaseInterface;
 use FzyCommon\Entity\Base\S3FileInterface;
 use Aws\S3\S3Client;
-use FzyCommon\Util\Params;
 
 /**
  * Class Flattener

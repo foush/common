@@ -1,7 +1,6 @@
 <?php
 namespace FzyCommon\Service;
 
-use FzyCommon\Entity\Base\UserNull;
 use FzyCommon\Util\Params;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -12,7 +11,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 abstract class Base implements ServiceLocatorAwareInterface
 {
-	const MODULE_CONFIG_KEY = 'fzycommon';
+    const MODULE_CONFIG_KEY = 'fzycommon';
 
     /**
      * @var ServiceLocatorInterface
@@ -24,10 +23,10 @@ abstract class Base implements ServiceLocatorAwareInterface
      */
     protected $config;
 
-	/**
-	 * @var \Doctrine\ORM\EntityManager
-	 */
-	protected $em;
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $em;
 
     /**
      * Get the application config as a Params object
@@ -38,17 +37,18 @@ abstract class Base implements ServiceLocatorAwareInterface
         if (!isset($config)) {
             $this->config = $this->getServiceLocator()->get('FzyCommon\Config');
         }
-	    return $this->config;
+
+        return $this->config;
     }
 
-	/**
-	 * Get the module config (application config section in the module key namespace specified by static::MODULE_CONFIG_KEY)
-	 * @return Params
-	 */
-	public function getModuleConfig()
-	{
-		return $this->getConfig()->getWrapped(static::MODULE_CONFIG_KEY);
-	}
+    /**
+     * Get the module config (application config section in the module key namespace specified by static::MODULE_CONFIG_KEY)
+     * @return Params
+     */
+    public function getModuleConfig()
+    {
+        return $this->getConfig()->getWrapped(static::MODULE_CONFIG_KEY);
+    }
 
     /**
      * Set service locator
@@ -75,10 +75,11 @@ abstract class Base implements ServiceLocatorAwareInterface
      */
     public function em()
     {
-	    if (!isset($this->em)) {
-		    $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-	    }
-	    return $this->em;
+        if (!isset($this->em)) {
+            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        }
+
+        return $this->em;
     }
 
     /**
