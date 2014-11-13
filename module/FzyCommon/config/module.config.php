@@ -72,6 +72,11 @@ return array(
 					__NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
 				)
 			)
-		)
+		),
+		'configuration' => array(
+			'orm_default' => array(
+				'generate_proxies' => false,
+			),
+		),
 	)
 );
