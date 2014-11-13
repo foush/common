@@ -1,6 +1,7 @@
 <?php
 namespace FzyCommon;
 use Aws\S3\S3Client;
+use Doctrine\Common\Cache\ArrayCache;
 use FzyCommon\Service\Base;
 
 return array(
@@ -32,6 +33,32 @@ return array(
 			'FzyCommon\Service\Aws\S3' => function($sm) {
 				return S3Client::factory($sm->get('FzyCommon\Service\Aws\S3\Config')->get());
 			},
+			'FzyCommon\Factory\DoctrineCache' => function($sm) {
+				/* @var $config \FzyCommon\Util\Params */
+				$config      = $sm->get( 'FzyCommon\ModuleConfig' );
+				if ($config->get('production')) {
+					try {
+						$redisConfig = $config->getWrapped( 'doctrine_cache_config' );
+						$cache       = new \Doctrine\Common\Cache\RedisCache();
+						$redis       = new \Redis();
+						$redis->connect( $redisConfig->get( 'host', '127.0.0.1' ), $redisConfig->get( 'port', 6379 ),
+							$redisConfig->get( 'timeout', 5 ) );
+						$cache->setRedis( $redis );
+
+						return $cache;
+					} catch ( \Exception $e ) {
+						if ( $config->get( 'debug' ) ) {
+							throw $e;
+						}
+					}
+				}
+				return new ArrayCache();
+			},
+			'doctrine.cache.fzy_cache' => function($sm) {
+				/* @var $config \FzyCommon\Util\Params */
+				$config = $sm->get('FzyCommon\ModuleConfig');
+				return $sm->get($config->get('doctrine_cache', 'FzyCommon\Factory\DoctrineCache'));
+			}
 		),
 	),
 	'controller_plugins' => array(
@@ -76,7 +103,18 @@ return array(
 		'configuration' => array(
 			'orm_default' => array(
 				'generate_proxies' => false,
+				'metadata_cache' => 'fzy_cache',
 			),
 		),
-	)
+	),
+	Base::MODULE_CONFIG_KEY => array(
+		'debug' => false,
+		'production' => true,
+		'doctrine_cache' => 'FzyCommon\Factory\DoctrineCache',
+		'doctrine_cache_config' => array(
+			'host' => '127.0.0.1',
+			'port' => 6379,
+			'timeout' => 5,
+		),
+	),
 );
