@@ -36,7 +36,7 @@ return array(
 			'FzyCommon\Factory\DoctrineCache' => function($sm) {
 				/* @var $config \FzyCommon\Util\Params */
 				$config      = $sm->get( 'FzyCommon\ModuleConfig' );
-				if ($config->get('production')) {
+				if ($config->get('production') && class_exists('Redis')) {
 					try {
 						$redisConfig = $config->getWrapped( 'doctrine_cache_config' );
 						$cache       = new \Doctrine\Common\Cache\RedisCache();
