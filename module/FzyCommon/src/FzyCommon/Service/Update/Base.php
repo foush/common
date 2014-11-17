@@ -138,7 +138,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
             $mainEntity = $this->createNewEntity($params);
             $this->setOperation(self::OPERATION_CREATE);
         }
-        $this->entity = $mainEntity;
+        $this->setEntity($mainEntity);
 
         return $this;
     }
