@@ -368,8 +368,7 @@ abstract class DQL extends Base
      */
     protected function getDataTablesSortColumn(Params $params)
     {
-        $column = $params->get('order')[0]['column'] ? $params->get('order')[0]['column'] : 0;
-
+        $column = $params->getWrapped('order')->getWrapped(0)->get('column',0);
         return $params->getWrapped('columns')->getWrapped($column)->get('data');
     }
 
