@@ -603,25 +603,36 @@ class Base extends UpdateService implements EventManagerAwareInterface
     /**
      * @return string
      */
-    public function getUpdateSuccessMessage()
+    public function getEntityDisplayName()
     {
-        return 'Entity was updated';
+        return ucwords(static::MAIN_TAG);
+    }
+
+    protected function getEntityEditUrl(BaseInterface $entity)
+    {
+        return $this->url()->fromRoute($this->getSuccessRedirectRouteName(), array(static::MAIN_ENTITY_ID_PARAM => $entity->id(), 'action' => 'edit'));
     }
 
     /**
      * @return string
      */
+    public function getUpdateSuccessMessage()
+    {
+        return $this->getEntityDisplayName() . ' was updated. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
+    }
+
     public function getCreateSuccessMessage()
     {
-        return 'Entity was created';
+        return $this->getEntityDisplayName() . ' was created. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
     }
+
 
     /**
      * @return string
      */
     public function getDeleteSuccessMessage()
     {
-        return 'Entity was deleted';
+        return $this->getEntityDisplayName() . ' was deleted';
     }
 
     /**
