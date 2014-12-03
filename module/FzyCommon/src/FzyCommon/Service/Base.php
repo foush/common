@@ -83,6 +83,14 @@ abstract class Base implements ServiceLocatorAwareInterface
     }
 
     /**
+     * @return \FzyCommon\Service\Url
+     */
+    public function url()
+    {
+        return $this->getServiceLocator()->get('FzyCommon\Service\Url');
+    }
+
+    /**
      * @param $className
      * @param $id
      * @return \FzyCommon\Entity\BaseInterface
