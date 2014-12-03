@@ -346,4 +346,48 @@ abstract class DQL extends Base
         return $this;
     }
 
+    /**
+     * Returns the sort order specified by Datatables params (ASC / DESC)
+     * @param Params $params
+     * @return string
+     */
+    protected function getDataTablesSortOrder(Params $params)
+    {
+        $default = 'ASC';
+        $order = strtoupper($params->getWrapped('order')->getWrapped(0)->get('dir', $default));
+        if (!in_array($order, array($default, 'DESC'))) {
+            $order = $default;
+        }
+        return $order;
+    }
+
+    /**
+     * Returns the column name selected for the sort
+     * @param Params $params
+     * @return array|null
+     */
+    protected function getDataTablesSortColumn(Params $params)
+    {
+        $column = $params->get('order')[0]['column'] ? $params->get('order')[0]['column'] : 0;
+
+        return $params->getWrapped('columns')->getWrapped($column)->get('data');
+    }
+
+    /**
+     * Uses datatables request paramters to determine the column name to order by
+     * @param  Params       $params
+     * @param  QueryBuilder $qb
+     * @return $this
+     */
+    protected function orderByDataTablesParams(Params $params, QueryBuilder $qb)
+    {
+        $order = $this->getDataTablesSortOrder($params);
+        $sort = $this->getDataTablesSortColumn($params);
+        if ($sort) {
+            $qb->addOrderBy($this->alias($sort), $order);
+        }
+
+        return $this;
+    }
+
 }
