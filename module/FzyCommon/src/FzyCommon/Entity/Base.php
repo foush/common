@@ -245,7 +245,7 @@ abstract class Base implements BaseInterface
      */
     public function jsonSerialize()
     {
-        return ((string) $this);
+        return $this->flatten();
     }
 
 }

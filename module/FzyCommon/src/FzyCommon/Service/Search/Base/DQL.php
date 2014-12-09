@@ -389,4 +389,54 @@ abstract class DQL extends Base
         return $this;
     }
 
+    /**
+     * Convenience method to add an AND WHERE MEMBER(s) OF clause in a common format.
+     * If $queryParameterName is unspecified, $requestParameterName is used for both
+     *
+     * @param  Params       $params
+     * @param  QueryBuilder $qb
+     * @param $requestParameterName
+     * @param  null         $queryParameterName
+     * @return $this
+     */
+    protected function addWhereMemberOfFilter(Params $params, QueryBuilder $qb, $requestParameterName, $queryParameterName = null)
+    {
+        if ($queryParameterName === null) {
+            $queryParameterName = $requestParameterName;
+        }
+        if ($params->has($requestParameterName)) {
+            $expressions = array();
+            foreach ((array) $params->get($requestParameterName) as $key => $value) {
+                $param = $queryParameterName.$key;
+                $expressions[] = $qb->expr()->orX(':'.$param.' MEMBER OF '.$this->alias($queryParameterName));
+                $qb->setParameter($param, $value);
+            }
+            $qb->andWhere(join(' OR ', $expressions));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Convenience method to add an AND WHERE IN clause in a common format.
+     * If $queryParameterName is unspecified, $requestParameterName is used for both
+     *
+     * @param  Params       $params
+     * @param  QueryBuilder $qb
+     * @param $requestParameterName
+     * @param  null         $queryParameterName
+     * @return $this
+     */
+    protected function addWhereInFilter(Params $params, QueryBuilder $qb, $requestParameterName, $queryParameterName = null)
+    {
+        if ($queryParameterName === null) {
+            $queryParameterName = $requestParameterName;
+        }
+        if ($params->has($requestParameterName)) {
+            $qb->andWhere($qb->expr()->in($this->alias($queryParameterName), ':'.$requestParameterName))->setParameter($requestParameterName, $params->get($requestParameterName));
+        }
+
+        return $this;
+    }
+
 }
