@@ -212,7 +212,7 @@ abstract class Base implements BaseInterface
 
     public function __toString()
     {
-        return json_encode($this->flatten());
+        return json_encode($this);
     }
 
     /**
