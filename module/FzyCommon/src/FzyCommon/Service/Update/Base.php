@@ -626,7 +626,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
         return $this->getEntityDisplayName() . ' was created. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
     }
 
-
     /**
      * @return string
      */

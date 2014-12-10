@@ -28,6 +28,7 @@ return array(
   'FzyCommon\Service\Search\Result'                  => __DIR__ . '/src/FzyCommon/Service/Search/Result.php',
   'FzyCommon\Service\Search\ResultProviderInterface' => __DIR__ . '/src/FzyCommon/Service/Search/ResultProviderInterface.php',
   'FzyCommon\Service\Update\Base'                    => __DIR__ . '/src/FzyCommon/Service/Update/Base.php',
+  'FzyCommon\Service\Url'                            => __DIR__ . '/src/FzyCommon/Service/Url.php',
   'FzyCommon\Util\Page'                              => __DIR__ . '/src/FzyCommon/Util/Page.php',
   'FzyCommon\Util\Params'                            => __DIR__ . '/src/FzyCommon/Util/Params.php',
   'FzyCommon\View\Helper\Base'                       => __DIR__ . '/src/FzyCommon/View/Helper/Base.php',

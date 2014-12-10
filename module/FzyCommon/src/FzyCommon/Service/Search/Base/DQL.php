@@ -348,7 +348,7 @@ abstract class DQL extends Base
 
     /**
      * Returns the sort order specified by Datatables params (ASC / DESC)
-     * @param Params $params
+     * @param  Params $params
      * @return string
      */
     protected function getDataTablesSortOrder(Params $params)
@@ -358,17 +358,19 @@ abstract class DQL extends Base
         if (!in_array($order, array($default, 'DESC'))) {
             $order = $default;
         }
+
         return $order;
     }
 
     /**
      * Returns the column name selected for the sort
-     * @param Params $params
+     * @param  Params     $params
      * @return array|null
      */
     protected function getDataTablesSortColumn(Params $params)
     {
         $column = $params->getWrapped('order')->getWrapped(0)->get('column',0);
+
         return $params->getWrapped('columns')->getWrapped($column)->get('data');
     }
 
