@@ -169,6 +169,19 @@ class Params
         return $slice;
     }
 
+    public function merge($data)
+    {
+        if ($data instanceof Params) {
+            $this->params = array_merge($this->params, $data->get());
+        } elseif (is_array($data)) {
+            $this->params = array_merge($this->params, $data);
+        } else {
+            throw new \RuntimeException("Unable to merge parameter data. Expected array or another Params object.");
+        }
+
+        return $this;
+    }
+
     protected static function getBodyData(Request $request = null)
     {
         $result = array();
