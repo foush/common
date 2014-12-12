@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f97b9d134dcb45a4eaa84e73753577e3",
+    "hash": "b304719f1d05aacc729cb4d84ef6bf78",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -564,73 +564,18 @@
             "time": "2014-12-11 05:46:03"
         },
         {
-            "name": "predis/predis",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nrk/predis.git",
-                "reference": "d4be306d0aca28b5633b96adef03b29fea569c2f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/d4be306d0aca28b5633b96adef03b29fea569c2f",
-                "reference": "d4be306d0aca28b5633b96adef03b29fea569c2f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "ext-curl": "Allows access to Webdis when paired with phpiredis",
-                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Predis\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniele Alessandri",
-                    "email": "suppakilla@gmail.com",
-                    "homepage": "http://clorophilla.net"
-                }
-            ],
-            "description": "Flexible and feature-complete PHP client library for Redis",
-            "homepage": "http://github.com/nrk/predis",
-            "keywords": [
-                "nosql",
-                "predis",
-                "redis"
-            ],
-            "time": "2014-08-01 09:59:50"
-        },
-        {
             "name": "symfony/event-dispatcher",
             "version": "2.7.x-dev",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "fb44a3acc6b9788106a2b91ab71b889ce313ac60"
+                "reference": "50f680f99c702c831314c00220c222aaff8916f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/fb44a3acc6b9788106a2b91ab71b889ce313ac60",
-                "reference": "fb44a3acc6b9788106a2b91ab71b889ce313ac60",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/50f680f99c702c831314c00220c222aaff8916f8",
+                "reference": "50f680f99c702c831314c00220c222aaff8916f8",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +619,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-08 08:43:57"
+            "time": "2014-12-12 16:23:01"
         },
         {
             "name": "zendframework/zendframework",
