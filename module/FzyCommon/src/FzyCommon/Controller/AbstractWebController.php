@@ -12,7 +12,7 @@ namespace FzyCommon\Controller;
 use FzyCommon\Util\Params;
 use Zend\View\Model\ViewModel;
 
-abstract class AbstractWebController extends AbstractController
+abstract class AbstractWebController extends AbstractServiceController
 {
     public function indexAction()
     {

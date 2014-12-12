@@ -2,16 +2,17 @@
 
 namespace FzyCommon\Controller\Api;
 
+use FzyCommon\Controller\AbstractServiceController;
 use FzyCommon\Service\Search\Base as SearchService;
 use FzyCommon\Service\Update\Base as UpdateService;
 use FzyCommon\Util\Params;
 use Zend\View\Model\JsonModel;
 
 /**
- * Class AbstractController
+ * Class AbstractApiController
  * @package FzyCommon\Controller\Api
  */
-abstract class AbstractApiController extends \FzyCommon\Controller\AbstractController
+abstract class AbstractApiController extends AbstractServiceController
 {
     protected function search(Params $params, SearchService $searchService)
     {

@@ -3,6 +3,7 @@
 return array(
   'FzyCommon\Module'                                 => __DIR__ . '/Module.php',
   'FzyCommon\Controller\AbstractController'          => __DIR__ . '/src/FzyCommon/Controller/AbstractController.php',
+  'FzyCommon\Controller\AbstractServiceController'   => __DIR__ . '/src/FzyCommon/Controller/AbstractServiceController.php',
   'FzyCommon\Controller\AbstractWebController'       => __DIR__ . '/src/FzyCommon/Controller/AbstractWebController.php',
   'FzyCommon\Controller\Api\AbstractApiController'   => __DIR__ . '/src/FzyCommon/Controller/Api/AbstractApiController.php',
   'FzyCommon\Controller\Plugin\Base'                 => __DIR__ . '/src/FzyCommon/Controller/Plugin/Base.php',
