@@ -113,6 +113,7 @@ return array(
 			'orm_default' => array(
 				'generate_proxies' => false,
 				'metadata_cache' => 'fzy_cache',
+				'query_cache' => 'fzy_cache',
 			),
 		),
 	),
