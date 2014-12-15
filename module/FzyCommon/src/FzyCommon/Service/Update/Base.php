@@ -75,6 +75,14 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     protected $valid;
 
+    /**
+     * @var bool
+     */
+    protected $useSessionMessage = true;
+
+    /**
+     * @var string
+     */
     protected $operation = self::OPERATION_NONE;
 
     /**
@@ -104,6 +112,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
         $this->setOperation(self::OPERATION_NONE);
         unset($this->formValidators);
         $this->errorMessages = array();
+        $this->useSessionMessage = true;
 
         return $this;
     }
@@ -823,4 +832,24 @@ class Base extends UpdateService implements EventManagerAwareInterface
     {
         return $this->operation;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getUseSessionMessage()
+    {
+        return $this->useSessionMessage;
+    }
+
+    /**
+     * @param  boolean $useSessionMessage
+     * @return $this
+     */
+    public function setUseSessionMessage($useSessionMessage)
+    {
+        $this->useSessionMessage = $useSessionMessage;
+
+        return $this;
+    }
+
 }

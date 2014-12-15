@@ -11,7 +11,9 @@ class UpdateResult extends Base
     {
         $redirect = null;
         if ($updater->getValid()) {
-            $this->flashMessenger()->addSuccessMessage($updater->getFormattedSuccessMessage());
+            if ($updater->getUseSessionMessage()) {
+                $this->flashMessenger()->addSuccessMessage($updater->getFormattedSuccessMessage());
+            }
             $redirect = $this->url()->fromRoute($updater->getSuccessRedirectRouteName(), $updater->getSuccessRedirectRouteParams(), $updater->getSuccessRedirectRouteOptions());
         } else {
             // set error
