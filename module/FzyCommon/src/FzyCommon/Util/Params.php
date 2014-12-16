@@ -125,6 +125,15 @@ class Params
     }
 
     /**
+     * @param $key
+     * @return bool
+     */
+    public function hasKey($key)
+    {
+        return array_key_exists($key, $this->params);
+    }
+
+    /**
      * Create a Param instance
      * @param  null                      $params
      * @param  null|Request              $request
