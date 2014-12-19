@@ -323,6 +323,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     public function setEntity(BaseInterface $entity)
     {
+        $this->setOperation($entity->id() ? static::OPERATION_UPDATE : static::OPERATION_CREATE);
         $this->entity = $this->preSetEntity($entity);
 
         return $this;
