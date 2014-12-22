@@ -43,6 +43,13 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     const OPTION_SHORT_CIRCUIT = 'short_circuit';
 
+    /**
+     * Set this option if you don't want the update service to
+     * flush on the entity manager automatically. To persist
+     * changes, you will need to manually flush the entity manager.
+     */
+    const OPTION_NO_FLUSH = 'no_flush';
+
     const MAIN_TAG = 'entity';
 
     /**
@@ -173,7 +180,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
         }
 
         $this->valid = $valid;
-        $this->postValidate($valid, $params);
+        $this->postValidate($valid, $params, $options);
 
         return $this;
     }
@@ -272,13 +279,15 @@ class Base extends UpdateService implements EventManagerAwareInterface
      * @param boolean $valid
      * @param Param   $params
      */
-    protected function postValidate($valid, Params $params)
+    protected function postValidate($valid, Params $params, $options = array())
     {
         if ($valid) {
             foreach ($this->getEntities() as $tag => $entity) {
                 $this->em()->persist($entity);
             }
-            $this->em()->flush();
+            if (!isset($options[static::OPTION_NO_FLUSH]) || !$options[static::OPTION_NO_FLUSH]) {
+                $this->em()->flush();
+            }
         }
     }
 
