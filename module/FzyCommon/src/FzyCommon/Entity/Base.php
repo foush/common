@@ -2,7 +2,6 @@
 
 namespace FzyCommon\Entity;
 
-use FzyCommon\Entity\Base\S3FileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
@@ -40,15 +39,7 @@ abstract class Base implements BaseInterface
      */
     public function flatten()
     {
-        $result = array('id' => $this->id());
-        if ($this instanceof S3FileInterface) {
-            $result[S3FileInterface::S3_KEY] = array(
-                S3FileInterface::S3_KEYS_INDEX => $this->getS3Keys(),
-                S3FileInterface::S3_URLS_INDEX => $this->getS3UrlKeys(),
-            );
-        }
-
-        return $result;
+        return array('id' => $this->id());
     }
 
     public function id()
