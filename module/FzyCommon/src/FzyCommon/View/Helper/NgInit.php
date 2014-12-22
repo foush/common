@@ -1,8 +1,6 @@
 <?php
 namespace FzyCommon\View\Helper;
 
-use FzyCommon\Entity\BaseInterface;
-
 /**
  * Class NgInit
  * @package FzyCommon\View\Helper
@@ -132,9 +130,6 @@ class NgInit extends Base
             $format = '';
             $args   = array();
             foreach ($this->itemsToInit as $item) {
-                if ($item instanceof BaseInterface) {
-                    $item = $this->getService( 'FzyCommon\Service\Flattener' )->flatten( $item );
-                }
                 $args[] = htmlentities( json_encode( $item ), ENT_COMPAT );
             }
             if ($this->initAssignment) {

@@ -8,14 +8,12 @@ return array(
 	'service_manager' => array(
 		'invokables' => array(
 			'FzyCommon\Service\EntityToForm' => 'FzyCommon\Service\EntityToForm',
-			'FzyCommon\Service\Flattener' => 'FzyCommon\Service\Flattener',
 			'FzyCommon\Service\Search\Result' => 'FzyCommon\Service\Search\Result',
             'FzyCommon\Service\Url' => 'FzyCommon\Service\Url',
             'FzyCommon\Service\Render' => 'FzyCommon\Service\Render',
 		),
         'aliases' => array(
             'FzyCommon\EntityToForm' => 'FzyCommon\Service\EntityToForm',
-            'FzyCommon\Flattener' => 'FzyCommon\Service\Flattener',
             'FzyCommon\Search\Result' => 'FzyCommon\Service\Search\Result',
             'FzyCommon\Url' => 'FzyCommon\Service\Url',
             'FzyCommon\Render' => 'FzyCommon\Service\Render',

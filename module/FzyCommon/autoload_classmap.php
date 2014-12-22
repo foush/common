@@ -29,7 +29,6 @@ return array(
     'FzyCommon\Listener\ServiceAwareEntity'             => __DIR__ . '/src/FzyCommon/Listener/ServiceAwareEntity.php',
     'FzyCommon\Service\Base'                            => __DIR__ . '/src/FzyCommon/Service/Base.php',
     'FzyCommon\Service\EntityToForm'                    => __DIR__ . '/src/FzyCommon/Service/EntityToForm.php',
-    'FzyCommon\Service\Flattener'                       => __DIR__ . '/src/FzyCommon/Service/Flattener.php',
     'FzyCommon\Service\Render'                          => __DIR__ . '/src/FzyCommon/Service/Render.php',
     'FzyCommon\Service\Search\Base\DQL'                 => __DIR__ . '/src/FzyCommon/Service/Search/Base/DQL.php',
     'FzyCommon\Service\Search\Base'                     => __DIR__ . '/src/FzyCommon/Service/Search/Base.php',

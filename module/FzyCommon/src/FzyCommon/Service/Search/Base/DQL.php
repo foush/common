@@ -45,15 +45,7 @@ abstract class DQL extends Base
      */
     protected function process($entity, Params $params, $results, $asEntity = false)
     {
-        return $asEntity ? $entity : $this->getFlattener()->flatten($entity);
-    }
-
-    /**
-     * @return \FzyCommon\Service\Flattener
-     */
-    protected function getFlattener()
-    {
-        return $this->getServiceLocator()->get('FzyCommon\Flattener');
+        return $asEntity ? $entity : $entity->flatten();
     }
 
     /**
