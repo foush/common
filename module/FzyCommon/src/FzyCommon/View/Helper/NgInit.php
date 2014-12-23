@@ -149,7 +149,13 @@ class NgInit extends Base
 
             return vsprintf( $format, $args );
         } catch (\Exception $e) {
-            return '<strong>Exception: </strong> '.$e->getMessage() . ' ' . $e->getTraceAsString();
+            $output = '';
+            while ($e) {
+                $output .= '<strong>Exception: </strong> '.$e->getMessage() . ' ' . $e->getTraceAsString().'<hr />';
+                $e = $e->getPrevious();
+            }
+
+            return $output;
         }
     }
 }
