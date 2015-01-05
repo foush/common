@@ -393,7 +393,8 @@ abstract class DQL extends Base
 
     /**
      * Convenience method to add an AND WHERE MEMBER(s) OF clause in a common format.
-     * If $queryParameterName is unspecified, $requestParameterName is used for both
+     * If $queryParameterName is unspecified, $requestParameterName is used for both.
+     * Any additional expressions will be added to the disjunction.
      *
      * @param  Params       $params
      * @param  QueryBuilder $qb
@@ -407,16 +408,31 @@ abstract class DQL extends Base
             $queryParameterName = $requestParameterName;
         }
         if ($params->has($requestParameterName)) {
-            $expressions = array();
-            foreach ((array) $params->get($requestParameterName) as $key => $value) {
-                $param = $queryParameterName.$key;
-                $expressions[] = $qb->expr()->orX(':'.$param.' MEMBER OF '.$this->alias($queryParameterName));
-                $qb->setParameter($param, $value);
-            }
-            $qb->andWhere(join(' OR ', $expressions));
+            $qb->andWhere(join(' OR ', $this->getExpressionsForWhereMembersOf($params, $qb, $requestParameterName, $queryParameterName)));
         }
-
         return $this;
+    }
+
+    /**
+     * Conveniance method to return a collection of "WHERE MEMBER OF" expressions in a common format.
+     * If $queryParameterName is unspecified, $requestParameterName is used for both.
+     * Any additional expressions will be added to the disjunction.
+     *
+     * @param  Params       $params
+     * @param  QueryBuilder $qb
+     * @param $requestParameterName
+     * @param  null         $queryParameterName
+     * @return array
+     */
+    protected function getExpressionsForWhereMembersOf(Params $params, QueryBuilder $qb, $requestParameterName, $queryParameterName = null)
+    {
+        $expressions = array();
+        foreach ((array)$params->get($requestParameterName) as $key => $value) {
+            $param = $queryParameterName . $key;
+            $expressions[] = $qb->expr()->orX(':' . $param . ' MEMBER OF ' . $this->alias($queryParameterName));
+            $qb->setParameter($param, $value);
+        }
+        return $expressions;
     }
 
     /**
