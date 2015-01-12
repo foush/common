@@ -47,5 +47,4 @@ class UpdateResult extends Base
         return $this->getService('ControllerPluginManager')
             ->get('url');
     }
-
 }

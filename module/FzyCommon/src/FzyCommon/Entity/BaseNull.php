@@ -4,10 +4,9 @@ namespace FzyCommon\Entity;
 
 class BaseNull implements BaseInterface
 {
-
     public function id()
     {
-        return null;
+        return;
     }
 
     public function isNull()
@@ -45,7 +44,7 @@ class BaseNull implements BaseInterface
      */
     public function asDoctrineProperty()
     {
-        return null;
+        return;
     }
 
     /**
@@ -53,7 +52,7 @@ class BaseNull implements BaseInterface
      * @param  \Doctrine\Common\Collections\Collection $collection
      * @return mixed
      */
-    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection)
+    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection, $allowDuplicates = false)
     {
         return $this;
     }
@@ -100,7 +99,7 @@ class BaseNull implements BaseInterface
 
     public function tsGetFormatted(\DateTime $tsProperty = null, $format = self::DEFAULT_DATE_FORMAT, $timezone = null)
     {
-        return null;
+        return;
     }
 
     public function __toString()
@@ -114,7 +113,7 @@ class BaseNull implements BaseInterface
      */
     public function getFormTag()
     {
-        return null;
+        return;
     }
 
     /**
@@ -138,5 +137,4 @@ class BaseNull implements BaseInterface
     {
         return json_encode(array());
     }
-
 }

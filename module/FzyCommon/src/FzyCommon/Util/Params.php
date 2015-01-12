@@ -200,7 +200,6 @@ class Params
                 try {
                     $result = Json::decode($content, Json::TYPE_ARRAY);
                 } catch (\RuntimeException $e) {
-
                 }
             }
         }

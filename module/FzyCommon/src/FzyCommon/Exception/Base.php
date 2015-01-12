@@ -1,4 +1,6 @@
 <?php
 namespace FzyCommon\Exception;
 
-class Base extends \Exception {}
+class Base extends \Exception
+{
+}

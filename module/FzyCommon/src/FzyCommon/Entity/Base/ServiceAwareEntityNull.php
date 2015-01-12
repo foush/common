@@ -26,5 +26,4 @@ class ServiceAwareEntityNull extends BaseNull implements ServiceAwareEntityInter
     {
         return $this->sl;
     }
-
 }

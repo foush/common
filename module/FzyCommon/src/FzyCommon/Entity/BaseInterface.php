@@ -45,9 +45,10 @@ interface BaseInterface extends \JsonSerializable
     /**
      * Adds $this to collection
      * @param  \Doctrine\Common\Collections\Collection $collection
+     * @param  bool                                    $allowDuplicates - (default false) set to true if this should be added to the collection regardless
      * @return mixed
      */
-    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection);
+    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection, $allowDuplicates = false);
 
     /**
      * Helper method to allow entities to return
@@ -100,5 +101,4 @@ interface BaseInterface extends \JsonSerializable
      * @return mixed
      */
     public function setFormTag($tag);
-
 }

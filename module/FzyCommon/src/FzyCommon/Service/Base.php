@@ -113,5 +113,4 @@ abstract class Base implements ServiceLocatorAwareInterface
 
         return $entity;
     }
-
 }

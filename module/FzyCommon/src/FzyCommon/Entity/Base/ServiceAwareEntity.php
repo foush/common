@@ -30,5 +30,4 @@ class ServiceAwareEntity extends Base implements ServiceAwareEntityInterface
     {
         return $this->sl;
     }
-
 }

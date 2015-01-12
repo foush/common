@@ -10,7 +10,6 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as FlashMessenger;
  */
 class FlashMessages extends AbstractHelper
 {
-
     /**
      * @var FlashMessenger
      */
@@ -44,7 +43,7 @@ class FlashMessages extends AbstractHelper
 
     public function __invoke($includeCurrentMessages = false)
     {
-        $messages = array_combine(array_keys($this->_nsMap), array(array(), array(), array(), array(),));
+        $messages = array_combine(array_keys($this->_nsMap), array(array(), array(), array(), array()));
         foreach ($messages as $className => &$m) {
             $ns = $this->_mapNameSpace($className);
             $m = $this->flashMessenger->getMessagesFromNamespace($ns);
@@ -56,5 +55,4 @@ class FlashMessages extends AbstractHelper
 
         return $messages;
     }
-
 }

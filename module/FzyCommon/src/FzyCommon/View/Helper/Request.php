@@ -36,5 +36,4 @@ class Request extends Base
 
         return $this->application;
     }
-
 }

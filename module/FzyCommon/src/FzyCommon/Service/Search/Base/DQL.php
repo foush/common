@@ -201,7 +201,7 @@ abstract class DQL extends Base
      */
     protected function searchFilter(Params $params, QueryBuilder $qb, $search)
     {
-        $qb->andWhere($this->alias('id') . ' LIKE :search')->setParameter('search', $search);
+        $qb->andWhere($this->alias('id').' LIKE :search')->setParameter('search', $search);
 
         return $this;
     }
@@ -296,7 +296,7 @@ abstract class DQL extends Base
             $queryParameterName = $requestParameterName;
         }
         if ($params->has($requestParameterName)) {
-            $qb->andWhere($this->alias($queryParameterName) . ' = :' . $queryParameterName)->setParameter($queryParameterName, $params->get($requestParameterName));
+            $qb->andWhere($this->alias($queryParameterName).' = :'.$queryParameterName)->setParameter($queryParameterName, $params->get($requestParameterName));
         }
 
         return $this;
@@ -309,7 +309,7 @@ abstract class DQL extends Base
      */
     public function alias($propertyName)
     {
-        return $this->getRepositoryAlias() . '.' . $propertyName;
+        return $this->getRepositoryAlias().'.'.$propertyName;
     }
 
     /**
@@ -369,7 +369,7 @@ abstract class DQL extends Base
      */
     protected function getDataTablesSortColumn(Params $params)
     {
-        $column = $params->getWrapped('order')->getWrapped(0)->get('column',0);
+        $column = $params->getWrapped('order')->getWrapped(0)->get('column', 0);
 
         return $params->getWrapped('columns')->getWrapped($column)->get('data');
     }
@@ -408,8 +408,9 @@ abstract class DQL extends Base
             $queryParameterName = $requestParameterName;
         }
         if ($params->has($requestParameterName)) {
-            $qb->andWhere(join(' OR ', $this->getExpressionsForWhereMembersOf($params, $qb, $requestParameterName, $queryParameterName)));
+            $qb->andWhere(implode(' OR ', $this->getExpressionsForWhereMembersOf($params, $qb, $requestParameterName, $queryParameterName)));
         }
+
         return $this;
     }
 
@@ -427,11 +428,12 @@ abstract class DQL extends Base
     protected function getExpressionsForWhereMembersOf(Params $params, QueryBuilder $qb, $requestParameterName, $queryParameterName = null)
     {
         $expressions = array();
-        foreach ((array)$params->get($requestParameterName) as $key => $value) {
-            $param = $queryParameterName . $key;
-            $expressions[] = $qb->expr()->orX(':' . $param . ' MEMBER OF ' . $this->alias($queryParameterName));
+        foreach ((array) $params->get($requestParameterName) as $key => $value) {
+            $param = $queryParameterName.$key;
+            $expressions[] = $qb->expr()->orX(':'.$param.' MEMBER OF '.$this->alias($queryParameterName));
             $qb->setParameter($param, $value);
         }
+
         return $expressions;
     }
 
@@ -456,5 +458,4 @@ abstract class DQL extends Base
 
         return $this;
     }
-
 }

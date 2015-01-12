@@ -31,5 +31,4 @@ abstract class AbstractServiceController extends AbstractController
 
         return $service;
     }
-
 }

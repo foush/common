@@ -19,7 +19,6 @@ use FzyCommon\Service\Base as UpdateService;
  */
 class Base extends UpdateService implements EventManagerAwareInterface
 {
-
     const EVENT_CONFIGURE_ENTITY = 'configure';
 
     const EVENT_CONFIGURE_FORM = 'configure_form';
@@ -374,7 +373,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
                         'tag' => $tag,
                         'entity' => $entity,
                         'form' => $form,
-                        'entities' => $entities
+                        'entities' => $entities,
                     ));
                 $forms[$tag] = $form;
             }
@@ -406,7 +405,6 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     protected function beforeFormGeneration(array $entities)
     {
-
     }
 
     /**
@@ -501,7 +499,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
                     ->trigger(self::EVENT_CONFIGURE_ENTITY.$tag, $this, array(
                         'tag' => $tag,
                         'entity' => $entity,
-                        'entities' => $entities
+                        'entities' => $entities,
                     ));
                 $this->entities[$tag] = $entity;
                 $entity->setFormTag($tag);
@@ -637,12 +635,12 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     public function getUpdateSuccessMessage()
     {
-        return $this->getEntityDisplayName() . ' was updated. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
+        return $this->getEntityDisplayName().' was updated. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
     }
 
     public function getCreateSuccessMessage()
     {
-        return $this->getEntityDisplayName() . ' was created. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
+        return $this->getEntityDisplayName().' was created. <a href="'.$this->getEntityEditUrl($this->entity()).'">Click here to edit.</a>';
     }
 
     /**
@@ -650,7 +648,7 @@ class Base extends UpdateService implements EventManagerAwareInterface
      */
     public function getDeleteSuccessMessage()
     {
-        return $this->getEntityDisplayName() . ' was deleted';
+        return $this->getEntityDisplayName().' was deleted';
     }
 
     /**
@@ -861,5 +859,4 @@ class Base extends UpdateService implements EventManagerAwareInterface
 
         return $this;
     }
-
 }

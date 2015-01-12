@@ -6,5 +6,4 @@ use FzyCommon\Exception\Update as Exception;
 
 class UnsetEntity extends Exception
 {
-
 }

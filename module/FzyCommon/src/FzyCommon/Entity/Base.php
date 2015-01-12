@@ -29,7 +29,6 @@ abstract class Base implements BaseInterface
 
     public function __construct()
     {
-
     }
 
     /**
@@ -98,9 +97,11 @@ abstract class Base implements BaseInterface
      * @param  \Doctrine\Common\Collections\Collection $collection
      * @return mixed
      */
-    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection)
+    public function addSelfTo(\Doctrine\Common\Collections\Collection $collection, $allowDuplicates = false)
     {
-        $collection->add($this);
+        if ($allowDuplicates || !$collection->contains($this)) {
+            return parent::addSelfTo($collection);
+        }
 
         return $this;
     }
@@ -238,5 +239,4 @@ abstract class Base implements BaseInterface
     {
         return $this->flatten();
     }
-
 }

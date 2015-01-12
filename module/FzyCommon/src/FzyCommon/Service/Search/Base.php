@@ -108,7 +108,6 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     protected function prepareSearch(Params $params)
     {
-
     }
 
     /**
@@ -167,7 +166,6 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     protected function preProcess(Params $params, $result)
     {
-
     }
 
     /**
@@ -194,7 +192,6 @@ abstract class Base extends BaseService implements ResultProviderInterface
      */
     protected function postProcess(Params $params, $result, array $processed)
     {
-
     }
 
     /**
@@ -205,7 +202,6 @@ abstract class Base extends BaseService implements ResultProviderInterface
      * @throws \FzyCommon\Exception\Search\NotFound
      */
     abstract public function find($id);
-
 
     /**
      * Get the resulting set that matches the search
@@ -311,5 +307,4 @@ abstract class Base extends BaseService implements ResultProviderInterface
     {
         return $this->drawNumber;
     }
-
 }

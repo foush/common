@@ -15,7 +15,6 @@ use Zend\Form\Annotation\AnnotationBuilder;
  */
 class EntityToForm extends Base
 {
-
     /**
      * @param $entity
      * @return null|\Zend\Form\Form
@@ -47,5 +46,4 @@ class EntityToForm extends Base
     {
         return $this->convertEntity($entity);
     }
-
 }
