@@ -100,7 +100,7 @@ abstract class Base implements BaseInterface
     public function addSelfTo(\Doctrine\Common\Collections\Collection $collection, $allowDuplicates = false)
     {
         if ($allowDuplicates || !$collection->contains($this)) {
-            return parent::addSelfTo($collection);
+            $collection->add($this);
         }
 
         return $this;
